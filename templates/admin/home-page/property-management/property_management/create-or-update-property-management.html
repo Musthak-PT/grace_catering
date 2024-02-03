@@ -1,0 +1,472 @@
+{% extends 'admin/layouts/apps.html' %}
+{% load static %}
+
+
+{% block content %}
+	<!--begin::Content wrapper-->
+    <div class="d-flex flex-column flex-column-fluid">
+        
+        
+
+        {% include 'admin/layouts/breadcrumbs.html' %}
+
+ 
+
+
+        <!--begin::Content-->
+        <div id="kt_app_content" class="app-content flex-column-fluid">
+            <!--begin::Content container-->
+            <div id="kt_app_content_container" class="app-container container-xxl">
+                <!--begin::Form-->
+                <form id="create-or-update-vehicle-form" class="form d-flex flex-column flex-lg-row"  method="POST" enctype="multipart/form-data"  action="{% url 'property_management:property_management.create' %}">
+                    {% csrf_token %}
+    
+                    <input type="hidden" name="property_management_id" value="{{property_management_obj.id}}" />
+                    <input type="hidden" name="property_uuid" value="{{uuid}}" />
+                    
+
+                    {% comment %} </div> {% endcomment %}
+                    <!--end::Aside column-->
+                    <!--begin::Main column-->
+                    <div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+                        <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
+                                    href="#create-or-update-property-management">Property Details</a>
+                            </li>
+                            <!--end:::Tab item-->
+                            <!--begin:::Tab item-->
+                            <li class="nav-item">
+                                <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                    href="#create-or-update-room-deatils">Rooms</a>
+                            </li>
+                            <!--end:::Tab item-->
+                        </ul>   
+                        <!--begin::Tab content-->
+                        <div class="tab-content">
+                            <!--begin::Tab pane-->
+                            <div class="tab-pane fade show active" id="create-or-update-property-management" role="tab-panel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10" id="property_details_section_div">
+    
+                                    
+                                    <div class="card card-flush py-4">
+                                        
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Property details</h2>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card-body pt-0 ">
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Name</label>
+                                                        <input type="text" name="name" value="{{property_management_obj.name}}" class="form-control mb-2" placeholder="Enter Name" />
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Accommodation Type</label>
+                                                        <select class="form-select mb-2" name="accommodation_type" data-handle-select-change="display_on" data-control="select2"  data-hide-search="false" data-placeholder="Select display on ">
+                                                            <option ></option>
+                                                                {% for accommodation_type in accommodation_type_queryset %}
+                                                                    {% comment %} <option {% if banner_image.display_on|stringformat:'s' == display_on.0|stringformat:'s' %} selected  {% endif %} value="{{display_on.0}}"  >{{accommodation_type.id}}</option> {% endcomment %}
+                                                                    <option {% if accommodation_type.id|stringformat:'s' == property_management_obj.accomodation_type.id|stringformat:'s' %} selected  {% endif %} value="{{accommodation_type.id}}"  >{{accommodation_type.name}}</option>
+                                                                {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+    
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Property Collections</label>
+                                                        <select class="form-select mb-2" name="accommodation_type" data-handle-select-change="display_on" data-control="select2"  data-hide-search="false" data-placeholder="Select display on " multiple>
+                                                            <option ></option>
+                                                                {% for collection in property_collection_queryset %}
+                                                                    {% comment %} <option {% if banner_image.display_on|stringformat:'s' == display_on.0|stringformat:'s' %} selected  {% endif %} value="{{display_on.0}}"  >{{accommodation_type.id}}</option> {% endcomment %}
+                                                                    <option {% if collection.id|stringformat:'s' == property_management_obj.collection.id|stringformat:'s' %} selected  {% endif %} value="{{collection.id}}"  >{{collection.name}}</option>
+                                                                {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="form-label">Description</label>
+                                                        <textarea id="description"  class="form-control" name="description" placeholder="Enter Description"  maxlength="250">{{property_management_obj.description | safe}}</textarea>
+                                                        <div class="error-message" style="color: red;"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Total Price </label>
+                                                        <input type="text" name="total_price" value="{{property_management_obj.total_price}}" class="form-control mb-2" placeholder="Total Price" />
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">No of Rooms </label>
+                                                        <input type="text" name="no_of_rooms" value="{{property_management_obj.no_of_rooms}}" class="form-control mb-2" placeholder="Enter No of Rooms" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Street</label>
+                                                        <input type="text" name="street" value="{{property_management_obj.address.street}}" class="form-control mb-2" placeholder="Enter Street" />
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">City</label>
+                                                        <input type="text" name="city" value="{{property_management_obj.address.city}}" class="form-control mb-2" placeholder="Enter City" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">City Area</label>
+                                                        <input type="text" name="city_area" value="{{property_management_obj.address.city_area}}" class="form-control mb-2" placeholder="Enter City Area" />
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Postal Code</label>
+                                                        <input type="text" name="postal_code" value="{{property_management_obj.address.postal_code}}" class="form-control mb-2" placeholder="Enter Postal Code" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Phone</label>
+                                                        <input type="text" name="phone" value="{{property_management_obj.address.phone}}" class="form-control mb-2" placeholder="Enter Phone" />
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Alternative Phone</label>
+                                                        <input type="text" name="alternative_phone" value="{{property_management_obj.address.alternative_phone}}" class="form-control mb-2" placeholder="Enter Alternative Phone" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Latitude</label>
+                                                        <input type="text" name="latitude" id="latitude" data-google-location="latitude" readonly value="{{property_management_obj.latitude}}" class="form-control mb-2"  placeholder="Enter latitude" {% if property_management_obj.corporate_user.user_type == '1' %}  readonly {% endif %}  />
+                                                    </div>
+                                                </div>
+
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Search Your Location</label>
+                                                        <input type="search"  id="place" name="place"  data-google-place="place" value="{{property_management_obj.location}}" class="form-control mb-2"  placeholder="Find your location" {% if property_management_obj.corporate_user.user_type == '1' %}  readonly {% endif %} />
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    <div class="mb-5 fv-row">
+                                                        <label class="required form-label">Longitude</label>
+                                                        <input type="text" id="longitude" name="longitude" data-google-location="longitude" readonly value="{{property_management_obj.longitude}}" class="form-control mb-2"  placeholder="Enter longitude" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="map" style="height: 400px;"></div>
+                                            
+                                            <div class="d-flex mb-10 flex-wrap gap-5 mt-10">
+                                                <div class="fv-row w-100 flex-md-root">
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="fv-row">
+                                                <div class="dropzone " id="vehicle_images_dropzone">
+                                                    <div class="dz-message needsclick">
+                                                        <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
+                                                        <div class="ms-4">
+                                                            <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
+                                                            {% comment %} <span class="fs-7 fw-semibold text-gray-400">Upload up to 10 files</span> {% endcomment %}
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show active" id="create-or-update-room-deatils" role="tab-panel">
+                                <div class="d-flex flex-column gap-7 gap-lg-10">
+    
+                                    
+                                    <div class="card card-flush">
+                                        
+                                        <div class="card-header">
+                                            <div class="card-title">
+                                                <h2>Room details</h2>
+                                            </div>
+                                            <button id="addNewDivBtnnn" class="btn btn-primary mt-8">Add New</button>
+                                        </div>
+                                        
+                                        <div class="container mt-5 ">
+                                            <!-- Original Card Body -->
+                                            <div class="add-room-div card-body pt-0" style="border: 3px solid #ccc; padding: 20px; margin: 20px 0; border-radius: 20px; background-color: #f8f9fa;">
+                                                <div class="d-flex mb-4 flex-wrap gap-5 mt-10" >
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="required form-label">Room Type</label>
+                                                            <select class="form-select mb-2" name="room_type" data-handle-select-change="display_on" data-control="select2"  data-hide-search="false" data-placeholder="Select display on ">
+                                                                <option ></option>
+                                                                {% for room_type in room_type_queryset %}
+                                                                    <option {% if room_type.id|stringformat:'s' == hotel_room_queryset.room_type.id|stringformat:'s' %} selected  {% endif %} value="{{room_type.id}}"  >{{room_type.name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="form-label">Description</label>
+                                                            <textarea id="description"  class="form-control" name="description" placeholder="Enter Description"  maxlength="250">{{property_management_obj.description | safe}}</textarea>
+                                                            <div class="error-message" style="color: red;"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="d-flex mb-4 flex-wrap gap-5 mt-10">
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="required form-label">Room Size</label>
+                                                            <input type="text" name="name" value="{{property_management_obj.name}}" class="form-control mb-2" placeholder="Enter Name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="required form-label">Price</label>
+                                                            <input type="text" name="name" value="{{property_management_obj.name}}" class="form-control mb-2" placeholder="Enter Name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="required form-label">Room Count</label>
+                                                            <input type="text" name="name" value="{{property_management_obj.name}}" class="form-control mb-2" placeholder="Enter Name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="fv-row w-100 flex-md-root">
+                                                        <div class="mb-5 fv-row">
+                                                            <label class="required form-label">Price</label>
+                                                            <input type="text" name="name" value="{{property_management_obj.name}}" class="form-control mb-2" placeholder="Enter Name" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="fv-row">
+                                                    <div class="dropzone " id="vehicle_images_dropzones">
+                                                        <div class="dz-message needsclick">
+                                                            <i class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
+                                                            <div class="ms-4">
+                                                                <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
+                                                                {% comment %} <span class="fs-7 fw-semibold text-gray-400">Upload up to 10 files</span> {% endcomment %}
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button id="DeleteRoomButton" class="btn btn-danger deleteBtn mt-10">Delete</button>
+                                            </div>
+                                            
+                                            <!-- Button to Add New Div -->
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Tab pane-->
+                        </div>
+                        <!--end::Tab content-->
+                        <div class="d-flex justify-content-end">
+                            <!--begin::Button-->
+                            <a href="{% url 'property_management:property_management.index' %}" class="btn btn-light me-5">Cancel</a>
+                            <!--end::Button-->
+                            <!--begin::Button-->
+                            <button type="submit" id="create-or-update-vehicle-submit" class="btn btn-primary">
+                                <span class="indicator-label">Save </span>
+                                <span class="indicator-progress">Please wait... 
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                            </button>
+                            <!--end::Button-->
+                        </div>
+                    </div>
+                    <!--end::Main column-->
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Content container-->
+        </div>
+        <!--end::Content-->
+    </div>
+    <!--end::Content wrapper-->
+	
+{% endblock content %}
+
+
+
+{% block script %}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnDgIL3Hp0Bhzf9yuOtn4qAIVnAnzvRJE&libraries=places" ></script>
+
+
+    <script>
+        var api_config = {
+            "property_image_upload_api_url": "{% url 'property_management:property_management.image.upload' %}",
+            "uuid" : "{{uuid}}",
+            "csrfmiddlewaretoken" : "{{ csrf_token }}",
+            "temporary_image_destroy_api_url" : "{% url 'property_management:property_management.temporary.image.destroy' %}",
+            "get_property_images_api_url" : "{% url 'property_management:get.property_management.images' %}",
+            
+            "property_management_id" : "{{property_management_obj.id}}",
+            "location_data" : {
+                "latitude" : "{{property_management_obj.latitude}}",
+                "longitude" : "{{property_management_obj.longitude}}",
+            },
+        }
+    </script>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Div Example</title>
+
+</head>
+<body>
+
+
+<script>
+    $(document).ready(function() {
+    // Hide the div initially
+    $('#create-or-update-room-deatils').hide();
+    // Handle tab click event
+    $('.nav-link[data-bs-toggle="tab"]').on('click', function() {
+        // Check if the clicked tab is the "Rooms" tab
+        if ($(this).attr('href') === '#create-or-update-room-deatils') {
+            // Show the div when the "Rooms" tab is clicked
+            $('#create-or-update-room-deatils').show();
+            
+        } else {
+            // Hide the div for other tabs
+            $('#create-or-update-room-deatils').hide();
+        }
+        });
+    });
+
+    
+    function addNewDiv(event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+    
+        // Clone the original div
+        var originalDiv = document.querySelector('.add-room-div');
+        var newDiv = originalDiv.cloneNode(true);
+    
+        // Generate a unique ID for the new div
+        var timestamp = new Date().getTime();
+        var newDivId = 'roomDiv_' + timestamp;
+        newDiv.id = newDivId;
+    
+        // Append the new div to the container
+        document.querySelector('.container').appendChild(newDiv);
+    
+        // Add event listener for the delete button in the new div
+        newDiv.querySelector('.deleteBtn').addEventListener('click', function(e) {
+            // Prevent the default click behavior of the delete button
+            e.preventDefault();
+    
+            // Check if there is more than one div before removing
+            if (document.querySelectorAll('.add-room-div').length > 1) {
+                // Remove the div when the delete button is clicked
+                document.getElementById(newDivId).remove();
+            } else {
+                alert("Cannot delete the last div.");
+            }
+        });
+    }
+    
+    // Event listener for the "Add" button
+    document.getElementById('addNewDivBtnnn').addEventListener('click', addNewDiv);
+</script>
+
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function(){
+        Inputmask({
+            mask: "*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
+            greedy: false,
+            onBeforePaste: function (pastedValue, opts) {
+                pastedValue = pastedValue.toLowerCase();
+                return pastedValue.replace("mailto:", "");
+            },
+            definitions: {
+                "*": {
+                    validator: '[0-9A-Za-z!#$%&"*+/=?^_`{|}~\-]',
+                    cardinality: 1,
+                    casing: "lower"
+                }
+            }
+        }).mask("#account_holder_email");
+        
+        new Tagify(document.querySelector("#meta_keywords"));
+        $('#account_number').maxlength({
+            warningClass: "badge badge-warning",
+            limitReachedClass: "badge badge-success"
+        });
+
+        Inputmask({
+            "mask" :  "+(974)-9999-9999"
+        }).mask("#contact_number");
+    });
+</script>
+
+
+
+<script>
+    function onlyNumberKey(evt) {
+          
+        // Only ASCII character in that range allowed
+        var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+        if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+            return false;
+        return true;
+    }
+
+    // in load show property details only
+
+
+
+
+
+    
+    
+
+
+</script>
+    
+    <script src="{% static 'assets/js/custom/pages/home-page/property-management/property-management/create-or-update-property-management.js' %}?time={% now 'h:i:s' %}"></script>
+
+    <script>
+        google.maps.event.addDomListener(window, 'load', initializeMap);
+    </script> 
+
+
+  
+{% endblock script %}
